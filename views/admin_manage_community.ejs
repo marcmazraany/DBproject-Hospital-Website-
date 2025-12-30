@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage Community</title>
+    <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+    />
+  </head>
+  <body>
+    <%- include('partials/header', { user: user, message: message }) %>
+    <div class="container mt-4">
+      <h1 class="mb-4">Manage Community</h1>
+      <% if (communities && communities.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Community Name</th>
+              <th>Description</th>
+              <th>Link</th>
+              <th>Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% communities.forEach(entry => { %>
+            <tr>
+              <td><%= entry.community_name %></td>
+              <td><%= entry.description %></td>
+              <td><a href="<%= entry.link %>" target="_blank">View Link</a></td>
+              <td>
+                <% if (entry.images) { %>
+                <img
+                  src="data:image/jpeg;base64,<%= Buffer.from(entry.images).toString('base64') %>"
+                  alt="Community Image"
+                  width="100"
+                />
+                <% } else { %> N/A <% } %>
+              </td>
+              <td>
+                <form
+                  action="/admin/community/<%= entry.community_name %>?_method=DELETE"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% } else { %>
+      <p>No community entries available.</p>
+      <% } %>
+      <hr/>
+      <h2>Add a New Community Entry</h2>
+      <form
+        action="/admin/community"
+        method="POST"
+        enctype="multipart/form-data"
+        class="border p-4 rounded shadow-sm"
+      >
+        <div class="form-group">
+          <label for="community_name">Community Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="community_name"
+            name="community_name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="link">Link:</label>
+          <input type="url" class="form-control" id="link" name="link" />
+        </div>
+        <div class="form-group">
+          <label for="images">Upload Image:</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="images"
+            name="images"
+            accept="image/*"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Add Community Entry
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<%- include('partials/header', { user: user, message: message }) %>
+<h2>My Doctor Appointments</h2>
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>Appointment ID</th>
+      <th>Doctor Name</th>
+      <th>Details</th>
+      <th>Date & Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% appointments.forEach(function(appointment) { %>
+    <tr>
+      <td><%= appointment.appointment_id %></td>
+      <td><%= appointment.name %></td>
+      <td><%= appointment.description %></td>
+      <td><%= new Date(appointment.appointment_date).toLocaleString() %></td>
+      <td><%= appointment.status %></td>
+      <td>
+        <% if (appointment.status === 'booked') { %>
+        <form
+          action="/appointments/<%= appointment.appointment_id %>?_method=PATCH"
+          method="POST"
+          onsubmit="return confirm('Are you sure you want to cancel this appointment?');"
+        >
+        <input type="hidden" name="_method" value="DELETE"/>
+        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+        </form>
+        <% } else { %> N/A <% } %>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+<h2 class="mt-5">My Room Reservations</h2>
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>Reservation ID</th>
+      <th>Room Name</th>
+      <th>Details</th>
+      <th>Date & Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% reservations.forEach(function(reservation) { %>
+    <tr>
+      <td><%= reservation.reservation_id %></td>
+      <td><%= reservation.room_name %></td>
+      <td><%= reservation.description %></td>
+      <td><%= new Date(reservation.reservation_date).toLocaleDateString() %></td>
+      <td><%= reservation.status %></td>
+      <td>
+        <% if (reservation.status === 'booked') { %>
+        <form
+          action="/reservations/<%= reservation.reservation_id %>?_method=PATCH"
+          method="POST"
+          onsubmit="return confirm('Are you sure you want to cancel this reservation?');"
+        >
+        <input type="hidden" name="_method" value="DELETE"/>
+        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+        </form>
+        <% } else { %> N/A <% } %>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>

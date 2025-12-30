@@ -1,0 +1,37 @@
+<%- include('partials/header', { user: user, message: message }) %>
+<h2>Reserve a room</h2>
+<form action="/reserveroom" method="POST">
+  <div class="mb-3" id="room_select">
+    <label for="room_id" class="form-label">Select Room</label>
+    <select class="form-select" id="room_id" name="room_id">
+      <option value="">Select Room</option>
+      <% rooms.forEach(function(room) { %>
+      <option value="<%= room.room_id %>">
+        <%= room.room_name %> (Capacity: <%= room.room_capacity %>)
+      </option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="reservation_date" class="form-label"
+      >reservation Date and Time</label
+    >
+    <input
+      type="datetime-local"
+      class="form-control"
+      id="reservation_date"
+      name="reservation_date"
+      required
+    />
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description / Notes</label>
+    <textarea
+      class="form-control"
+      id="description"
+      name="description"
+      rows="3"
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Reserve Room</button>
+</form>

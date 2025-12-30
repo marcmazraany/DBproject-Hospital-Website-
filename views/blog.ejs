@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoQF/6nZkMV6KA5F7rLTQ5o5N0c5D5jE4q7kRZH6V5KK65"
+      crossorigin="anonymous"
+    />
+    <style>
+      .article img {
+        object-fit: cover;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/header', { user: user, message: message }) %>
+    <div class="container">
+      <h1 class="mb-4 text-center">Blog Articles</h1>
+      <div class="row">
+        <% articles.forEach(article => { %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <% if (article.images) { %>
+            <img
+            src="data:image/jpeg;base64,<%= Buffer.from(article.images).toString('base64')%>"
+            alt="Article Image"
+            />
+            <% } %>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-2"><%= article.title %></h5>
+              <p class="card-text mb-3"><%= article.description %></p>
+              <p class="card-text text-muted mb-3">Read Count: 
+                <%= (article.views == null) ? 0 : article.views %>
+              </p>
+              
+              <% if (article.link) { %>
+                <form action="/blog/<%= article.title %>" method="POST" class="mt-3">
+                  <button type="button" class="btn btn-primary w-100"
+                    onclick="window.open('<%= article.link %>', '_blank'); this.form.submit();">
+                    Read More
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>

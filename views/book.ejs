@@ -1,0 +1,36 @@
+<%- include('partials/header', { user: user, message: message }) %>
+<h2>Book an Appointment</h2>
+<form action="/book" method="POST">
+  <div class="mb-3" id="doctor_select">
+    <label for="doctor_id" class="form-label">Select Doctor</label>
+    <select class="form-select" id="doctor_id" name="doctor_id">
+      <option value="">Select Doctor</option>
+      <% doctors.forEach(function(doctor) { %>
+      <option value="<%= doctor.doctor_id %>">
+        <%= doctor.name %> - <%= doctor.specialty %>
+      </option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="appointment_date" class="form-label"
+      >Appointment Date and Time</label
+    >
+    <input
+      type="datetime-local"
+      class="form-control"
+      id="appointment_date"
+      name="appointment_date"
+      required/>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description / Notes</label>
+    <textarea
+      class="form-control"
+      id="description"
+      name="description"
+      rows="3"
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Book Appointment</button>
+</form>

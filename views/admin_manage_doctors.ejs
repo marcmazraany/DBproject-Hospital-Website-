@@ -1,0 +1,115 @@
+<%- include('partials/header', { user: user, message: message }) %>
+
+<h2>Manage Doctors</h2>
+
+<!-- Form to Add New Doctor -->
+<div class="mt-4 mb-4">
+  <h4>Add New Doctor</h4>
+  <form action="/admin/doctors" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Doctor Name</label>
+      <input type="text" class="form-control" id="name" name="name" required />
+    </div>
+    <div class="mb-3">
+      <label for="specialty" class="form-label">Specialty</label>
+      <select class="form-select" id="specialty" name="specialty" required>
+        <option value="" disabled selected>Select a specialty</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Dermatology">Dermatology</option>
+        <option value="Endocrinology">Endocrinology</option>
+        <option value="Gastroenterology">Gastroenterology</option>
+        <option value="Hematology">Hematology</option>
+        <option value="Nephrology">Nephrology</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Oncology">Oncology</option>
+        <option value="Ophthalmology">Ophthalmology</option>
+        <option value="Orthopedics">Orthopedics</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="Psychiatry">Psychiatry</option>
+        <option value="Pulmonology">Pulmonology</option>
+        <option value="Radiology">Radiology</option>
+        <option value="Rheumatology">Rheumatology</option>
+        <option value="Urology">Urology</option>
+        <option value="General Surgery">General Surgery</option>
+        <option value="Plastic Surgery">Plastic Surgery</option>
+        <option value="Emergency Medicine">Emergency Medicine</option>
+        <option value="Anesthesiology">Anesthesiology</option>
+        <option value="Family Medicine">Family Medicine</option>
+        <option value="Infectious Disease">Infectious Disease</option>
+        <option value="Neurosurgery">Neurosurgery</option>
+        <option value="Pathology">Pathology</option>
+        <option value="Preventive Medicine">Preventive Medicine</option>
+        <option value="Obstetrics and Gynecology">
+          Obstetrics and Gynecology
+        </option>
+        <option value="Otolaryngology">Otolaryngology</option>
+        <option value="Physical Medicine and Rehabilitation">
+          Physical Medicine and Rehabilitation
+        </option>
+        <option value="Sports Medicine">Sports Medicine</option>
+        <option value="Thoracic Surgery">Thoracic Surgery</option>
+        <option value="Vascular Surgery">Vascular Surgery</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="availability_start" class="form-label"
+        >Availability Start (Time)</label>
+      <input
+        type="time"
+        class="form-control"
+        id="availability_start"
+        name="availability_start"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="availability_end" class="form-label"
+        >Availability End (Time)</label>
+      <input
+        type="time"
+        class="form-control"
+        id="availability_end"
+        name="availability_end"
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Add Doctor</button>
+  </form>
+</div>
+<h4>Existing Doctors</h4>
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Doctor ID</th>
+      <th>Name</th>
+      <th>Specialty</th>
+      <th>Availability</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% doctors.forEach(function(doctor) { %>
+    <tr>
+      <td><%= doctor.doctor_id %></td>
+      <td><%= doctor.name %></td>
+      <td><%= doctor.specialty %></td>
+      <td>
+        <% if (doctor.availability_start && doctor.availability_end) { %> <%=
+        doctor.availability_start %> - <%= doctor.availability_end %> <% } else
+        { %> Not Set <% } %>
+      </td>
+      <td>
+        <form
+          action="/admin/doctors/<%= doctor.doctor_id %>?_method=DELETE"
+          method="POST"
+          onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+
+
+
